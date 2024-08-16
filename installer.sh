@@ -30,8 +30,8 @@ rm -rf ~/.tmux
 echo removed .tmux directory from $HOME
 
 # tmux package manager installation
-# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-# echo cloned tmux package manager to user .tmux directory
+# git clone https://github.com/tmux-plugins/tpm ~/dotfiles/tmux/plugins/tpm
+# echo cloned tmux package manager to dotfiles tmux directory
 
 # create ~/.config if it doesn't exist already
 mkdir -p ~/.config

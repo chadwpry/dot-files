@@ -1,4 +1,5 @@
 .DS_Store
 
+tmux/plugins
 fonts/**/*.zip
 nvim/lazy-lock.json
