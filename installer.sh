@@ -29,10 +29,6 @@ echo removed home-manager from $XDG_CONFIG_HOME/.config
 rm -rf ~/.tmux
 echo removed .tmux directory from $HOME
 
-# tmux package manager installation
-# git clone https://github.com/tmux-plugins/tpm ~/dotfiles/tmux/plugins/tpm
-# echo cloned tmux package manager to dotfiles tmux directory
-
 # create ~/.config if it doesn't exist already
 mkdir -p ~/.config
 
@@ -50,16 +46,10 @@ echo linked zsh configurations to $XDG_CONFIG_HOME
 ln -s $HOME/dotfiles/home-manager $HOME/.config
 echo linked home-manager configuration to $XDG_CONFIG_HOME
 
-# sh <(curl -L https://nixos.org/nix/install) --daemon
-#
-# nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-# nix-channel --update
-#
-# nix-shell '<home-manager>' -A install
-
 # copy fonts to local machine for mac
 if [[ $OSTYPE == 'darwin'* ]]; then
   cp -rf $HOME/dotfiles/fonts/*.ttf ~/Library/Fonts
   echo copied fonts on mac system
 fi
 
+git submodule update --init
