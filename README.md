@@ -39,6 +39,7 @@ Configure $GITUSER, $GITEMAIL
 ```zsh
 export $GITUSER="<git name>"
 export $GITEMAIL="<git email>"
+home-manager switch
 ```
 
 ### Tmux
