@@ -1,7 +1,4 @@
 .DS_Store
 
-archived
 fonts/**/*.zip
-tmux/plugins
-Brewfile.lock.json
 nvim/lazy-lock.json
