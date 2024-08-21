@@ -90,6 +90,9 @@
         };
         ui = "auto";
       };
+      credential = {
+        helper = "store";
+      };
       core = {
         autocrlf = false;
         whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
