@@ -7,7 +7,7 @@
   home.homeDirectory = builtins.getEnv "HOME";
 
   # Packages that should be installed to the user profile.
-  home.packages = [
+  home.packages = with pkgs; [
     pkgs.awscli
     pkgs.azure-cli
     pkgs.cmake
@@ -28,9 +28,9 @@
     pkgs.pkg-config
     pkgs.pulumi
     pkgs.readline
-    pkgs.redis
     pkgs.ripgrep
     pkgs.rustup
+    pkgs.streamlink
     pkgs.taskwarrior
     pkgs.tmux
     pkgs.tree
