@@ -20,6 +20,9 @@ echo removed nvim link from $XDG_CONFIG_HOME
 unlink ~/.config/tmux
 echo removed tmux link from $XDG_CONFIG_HOME
 
+unlink ~/.config/nix
+echo removed nix link from $XDG_CONFIG_HOME
+
 unlink ~/.config/zsh
 echo removed zsh link from $XDG_CONFIG_HOME
 
@@ -35,6 +38,9 @@ mkdir -p ~/.config
 # link tmux config directory to ~/.config/tmux ($XDG_CONFIG_HOME)
 ln -s $HOME/dotfiles/tmux $HOME/.config/tmux
 echo linked tmux configuration to $XDG_CONFIG_HOME
+
+ln -s $HOME/dotfiles/nix $HOME/.config/nix
+echo linked nix configuration to $XDG_CONFIG_HOME
 
 # link nvim config directory to ~/.config/nvim
 ln -s $HOME/dotfiles/nvim $HOME/.config/nvim
