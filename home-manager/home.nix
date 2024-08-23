@@ -34,7 +34,7 @@
     pkgs.streamlink
     pkgs.tmux
     pkgs.tree
-    pkgs.twitch-cli
+    pkgs.w3m
     pkgs.watch
     pkgs.watchman
     pkgs.websocat
