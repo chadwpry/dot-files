@@ -5,7 +5,7 @@
 local M = {}
 
 M.ui = {
-  theme = "monekai",
+  theme = "nightfox",
   transparency = false,
 
   statusline = {
