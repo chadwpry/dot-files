@@ -22,6 +22,7 @@
     pkgs.htop
     pkgs.jq
     pkgs.libiconv
+    pkgs.nb
     pkgs.neovim
     pkgs.openssl
     pkgs.openssl.dev
@@ -31,7 +32,6 @@
     pkgs.ripgrep
     pkgs.rustup
     pkgs.streamlink
-    pkgs.taskwarrior
     pkgs.tmux
     pkgs.tree
     pkgs.twitch-cli
