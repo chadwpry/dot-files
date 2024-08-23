@@ -155,6 +155,12 @@
     };
 
     initExtra = ''
+      echo -ne '\033]0;New Window\a'
+
+      setTitle() {
+        echo -ne '\033]0;'"$1"'\a'
+      }
+
       for config_file in $(ls $HOME/.config/zsh | grep -e '.zsh$')
       do
         source "$HOME/.config/zsh/$config_file"
