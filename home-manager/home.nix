@@ -141,6 +141,8 @@
       EDITOR = "nvim";
       PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
       PROMPT="%F{green}%*%f %F{cyan}%~%f %F{red}%f$ ";
+      GITUSER="Chad W Pry";
+      GITEMAIL="chad.pry@gmail.com";
     };
     zplug = {
       enable = true;
@@ -157,7 +159,7 @@
     initExtra = ''
       echo -ne '\033]0;New Window\a'
 
-      setTitle() {
+      settitle() {
         echo -ne '\033]0;'"$1"'\a'
       }
 
