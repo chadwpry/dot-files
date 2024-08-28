@@ -8,6 +8,7 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
+    pkgs.age
     pkgs.awscli
     pkgs.azure-cli
     pkgs.cmake
