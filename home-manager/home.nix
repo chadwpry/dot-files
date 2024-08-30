@@ -20,7 +20,6 @@
       pkgs.docker-compose
       pkgs.ffmpeg
       pkgs.fortune
-      pkgs.git
       pkgs.glib
       pkgs.gnupg
       pkgs.go
