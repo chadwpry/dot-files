@@ -22,7 +22,6 @@
       pkgs.fortune
       pkgs.glib
       pkgs.gnupg
-      pkgs.go
       pkgs.gpgme
       pkgs.htop
       pkgs.jq
