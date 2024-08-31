@@ -150,16 +150,37 @@
 
     programs.tmux = {
       enable = true;
+      aggressiveResize = true;
       baseIndex = 1;
+      historyLimit = 50000;
+      keyMode = "vi";
+      mouse = true;
+      plugins = with pkgs; [
+        {
+          plugin = tmuxPlugins.dracula;
+          extraConfig = ''
+            set -g @plugin 'dracula/tmux'
+            set -g @dracula-theme 'default'
+            set -g @dracula-time-format "%a %F %R %Z"
+            set -g @dracula-show-powerline true
+            set -g @dracula-plugins "git ssh-session time"
+            set -g @dracula-git-colors "dark_gray green"
+            set -g @dracula-ssh-session-colors "dark_gray pink"
+            set -g @dracula-time-colors "dark_gray white"
+            set -g @dracula-show-left-icon '⮕'
+            set -g @dracula-left-icon-padding 0
+          '';
+        }
+        tmuxPlugins.sensible
+        tmuxPlugins.yank
+      ];
+      prefix = "C-b";
+      shell = "${pkgs.zsh}/bin/zsh";
+      terminal = "tmux-256color";
+        # if isDarwin
+        # then "screen-256color"
+        # else "xterm-256color";
       extraConfig = ''
-        setw -g mouse on
-
-        set -g status-keys vi
-        set-window-option -g mode-keys vi
-
-        # set -g base-index 1
-        # set -g pane-base-index 1
-        # set-window-option -g pane-base-index 1
         set-option -g renumber-windows on
 
         set-option -a terminal-overrides ",*256col*:RGB"
@@ -169,11 +190,11 @@
         bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.config/tmux/tmux.conf reloaded"
         bind-key M split-window -h "nvim ~/.config/tmux/tmux.conf"
 
-        # vim
+        # nvim
         bind-key v split-window -h -c "#{pane_current_path}"
         bind-key s split-window -v -c "#{pane_current_path}"
 
-        setw -g history-limit 50000
+        # setw -g history-limit 50000
 
         set-option -g status-position top
 
@@ -198,32 +219,6 @@
         bind-key -n M-Down resize-pane -D 2
         bind-key -n M-Left resize-pane -L 2
       '';
-      mouse = true;
-      plugins = with pkgs; [
-        {
-          plugin = tmuxPlugins.dracula;
-          extraConfig = ''
-            set -g @plugin 'dracula/tmux'
-            set -g @dracula-theme 'default'
-            set -g @dracula-time-format "%a %F %R %Z"
-            set -g @dracula-show-powerline true
-            set -g @dracula-plugins "git ssh-session time"
-            set -g @dracula-git-colors "dark_gray green"
-            set -g @dracula-ssh-session-colors "dark_gray pink"
-            set -g @dracula-time-colors "dark_gray white"
-            set -g @dracula-show-left-icon '⮕'
-            set -g @dracula-left-icon-padding 0
-          '';
-        }
-        tmuxPlugins.sensible
-        tmuxPlugins.yank
-      ];
-      shell = "${pkgs.zsh}/bin/zsh";
-      shortcut = "b";
-      terminal = "tmux-256color";
-        # if isDarwin
-        # then "screen-256color"
-        # else "xterm-256color";
     };
 
     programs.zsh = {
