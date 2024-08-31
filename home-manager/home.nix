@@ -13,7 +13,6 @@
 
     # Packages that should be installed to the user profile.
     home.packages = with pkgs; [
-      pkgs.age
       pkgs.azure-cli
       pkgs.cmake
       pkgs.docker-compose
@@ -22,16 +21,12 @@
       pkgs.glib
       pkgs.gnupg
       pkgs.gpgme
-      pkgs.htop
-      pkgs.jq
       pkgs.libiconv
       pkgs.nb
       pkgs.neovim
-      pkgs.openssl
-      pkgs.openssl.dev
-      pkgs.pkg-config
-      pkgs.readline
-      pkgs.ripgrep
+      # pkgs.openssl
+      # pkgs.openssl.dev
+      # pkgs.pkg-config
       pkgs.rustup
       pkgs.streamlink
       pkgs.tree
@@ -59,14 +54,29 @@
       enable = true;
     };
 
+    programs.bash = {
+      enable = true;
+      enableCompletion = true;
+      # profileExtra = ''
+      #   export NVM_DIR="$HOME/.nvm"
+      #   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+      #   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+      # '';
+    };
+
     programs.bat = {
       enable = true;
     };
 
     programs.direnv = {
       enable = true;
+      enableBashIntegration = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
+    };
+
+    programs.fastfetch = {
+      enable = true;
     };
 
     programs.git = {
@@ -143,8 +153,37 @@
       enable = true;
     };
 
+    programs.htop = {
+      enable = true;
+    };
+
+    programs.jq = {
+      enable = true;
+    };
+
+    programs.less = {
+      enable = true;
+    };
+
+    programs.lesspipe = {
+      enable = true;
+    };
+
+    programs.pandoc = {
+      enable = true;
+    };
+
+    programs.readline = {
+      enable = true;
+    };
+
+    programs.ripgrep = {
+      enable = true;
+    };
+
     programs.starship = {
       enable = true;
+      enableBashIntegration = true;
       enableZshIntegration = true;
       settings = {
         add_newline = false;
