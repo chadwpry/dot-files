@@ -14,7 +14,6 @@
     # Packages that should be installed to the user profile.
     home.packages = with pkgs; [
       pkgs.age
-      pkgs.awscli
       pkgs.azure-cli
       pkgs.cmake
       pkgs.docker-compose
@@ -55,6 +54,10 @@
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
+
+    programs.awscli = {
+      enable = true;
+    };
 
     programs.bat = {
       enable = true;
