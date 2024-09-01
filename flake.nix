@@ -56,7 +56,13 @@
         nixosConfigurations = {
           nixos = self.nixos-flake.lib.mkLinuxSystem {
             nixpkgs.hostPlatform = "x86_64-linux";
+
             imports = [
+              nixos-wsl.nixosModules.default
+              {
+                system.stateVersion = "24.05";
+                wsl.enable = true;
+              }
               self.nixosModules.common
               self.nixosModules.linux
               self.nixosModules.home-manager
@@ -66,7 +72,6 @@
                     self.homeModules.common
                     self.homeModules.linux
                   ];
-                  wsl.enable = true;
                 };
               }
             ];
