@@ -40,18 +40,18 @@
       imports = [
         inputs.nixos-flake.flakeModule
         # inputs.treefmt-nix.flakeModule
-        ./users
-        # ./home
+        # ./users
+        ./home
         # ./nixos
-        ./nix-darwin
+        # ./nix-darwin
       ];
 
 
       flake = {
         # Configuration for my M1 Macbook Max (using nix-darwin)
-        darwinConfigurations.bass =
-          self.nixos-flake.lib.mkMacosSystem
-            ./systems/darwin.nix;
+        # darwinConfigurations.bass =
+        #   self.nixos-flake.lib.mkMacosSystem
+        #     ./systems/darwin.nix;
 
         nixosConfigurations = {
           nixos = self.nixos-flake.lib.mkLinuxSystem {
