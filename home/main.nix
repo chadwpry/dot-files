@@ -21,6 +21,7 @@
       pkgs.gpgme
       pkgs.libiconv
       pkgs.nb
+      pkgs.neofetch
       pkgs.neovim
       pkgs.nerdfonts
       # pkgs.openssl
