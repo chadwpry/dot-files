@@ -8,7 +8,7 @@
         home.stateVersion = "24.05";
         imports = [
           # inputs.nixvim.homeManagerModules.nixvim
-          inputs.nix-index-database.hmModules.nix-index
+          # inputs.nix-index-database.hmModules.nix-index
           ./main.nix
           ./direnv.nix
           ./git.nix

@@ -7,6 +7,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -20,8 +21,8 @@
     # github-nix-ci.url = "github:juspay/github-nix-ci";
     # nixos-vscode-server.flake = false;
     # nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
-    nix-index-database.url = "github:nix-community/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    # nix-index-database.url = "github:nix-community/nix-index-database";
+    # nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     # actualism-app.url = "github:srid/actualism-app";
     # omnix.url = "github:juspay/omnix";
 
@@ -33,9 +34,9 @@
     # treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixos-wsl, home-manager, ... }:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       imports = [
         inputs.nixos-flake.flakeModule
         # inputs.treefmt-nix.flakeModule
@@ -53,7 +54,47 @@
             ./systems/darwin.nix;
 
         nixosConfigurations = {
+          nixos = self.nixos-flake.lib.mkLinuxSystem {
+            nixpkgs.hostPlatform = "x86_64-linux";
+            imports = [
+              self.nixosModules.common
+              self.nixosModules.linux
+              self.nixosModules.home-manager
+              {
+                home-manager.users.shadow = {
+                  imports = [
+                    self.homeModules.common
+                    self.homeModules.linux
+                  ];
+                  wsl.enable = true;
+                };
+              }
+            ];
+          };
         };
+
+        nixosModules = {
+          common = { pkgs, ... }: {
+            environment.systemPackages = with pkgs; [
+
+            ];
+          };
+
+          linux = { pkgs, ... }: {
+            users.users.shadow.isNormalUser = true;
+            # services.netdata.enable = true;
+          };
+
+          # darwin = { pkgs, ... }: {
+          #   security.pam.enableSudoTouchIdAuth = true;
+          # };
+        };
+
+        homeModules = import ./home;
+
+        # nixosConfiguration."DESKTOP-72MFM9K" =
+        #   self.nixos-flake.lib.mkLinuxSystem
+        #     ./systems/wsl-ubuntu.nix;
 
         # Hetzner dedicated
         # nixosConfigurations.immediacy =
@@ -62,16 +103,15 @@
       };
 
       perSystem = { self', inputs', pkgs, system, config, ... }: {
-      #   # My Ubuntu VM
-      #   legacyPackages.homeConfigurations."shadow@ubuntu" =
-      #     self.nixos-flake.lib.mkHomeConfiguration pkgs {
-      #       imports = [
-      #         self.homeModules.common-linux
-      #       ];
-      #       home.username = builtins.getEnv "USER";
-      #       home.homeDirectory = builtins.getEnv "HOME";
-      #     };
-      #
+        # legacyPackages.homeConfigurations."shadow@ubuntu" =
+        #   self.nixos-flake.lib.mkHomeConfiguration pkgs {
+        #     imports = [
+        #       self.homeModules.common-linux
+        #     ];
+        #     home.username = "shadow";
+        #     home.homeDirectory = "/home/shadow";
+        #   };
+
       #   # Flake inputs we want to update periodically
       #   # Run: `nix run .#update`.
         nixos-flake = {
@@ -80,7 +120,7 @@
             "home-manager"
             "nix-darwin"
             "nixos-flake"
-            "nix-index-database"
+            # "nix-index-database"
             # "nixvim"
           ];
         };
