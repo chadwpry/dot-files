@@ -3,29 +3,30 @@
 {
   flake = {
     homeModules = {
-      common = {
-        # home.stateVersion = "22.11";
+      common-linux = {
         home.stateVersion = "24.05";
+
         imports = [
-          # inputs.nixvim.homeManagerModules.nixvim
-          # inputs.nix-index-database.hmModules.nix-index
           ./main.nix
           ./direnv.nix
           ./git.nix
           ./starship.nix
           ./tmux.nix
-        ];
-      };
-      common-linux = {
-        imports = [
-          self.homeModules.common
+
           ./bash.nix
           ./zsh.nix
         ];
       };
       common-darwin = {
+        home.stateVersion = "24.05";
+
         imports = [
-          self.homeModules.common
+          ./main.nix
+          ./direnv.nix
+          ./git.nix
+          ./starship.nix
+          ./tmux.nix
+
           ./zsh.nix
           ./bash.nix
           # ./_1password.nix

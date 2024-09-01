@@ -41,7 +41,7 @@
         inputs.nixos-flake.flakeModule
         # inputs.treefmt-nix.flakeModule
         ./users
-        ./home
+        # ./home
         # ./nixos
         ./nix-darwin
       ];
@@ -94,8 +94,6 @@
           #   security.pam.enableSudoTouchIdAuth = true;
           # };
         };
-
-        homeModules = import ./home;
 
         # nixosConfiguration."DESKTOP-72MFM9K" =
         #   self.nixos-flake.lib.mkLinuxSystem
