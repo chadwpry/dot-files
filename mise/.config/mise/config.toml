@@ -1,5 +1,10 @@
 [settings]
+experimental = true
 idiomatic_version_file_enable_tools = ["ruby"]
+
+[bootstrap.packages]
+"brew:stow" = "latest"
+"pacman:stow" = "latest"
 
 [tools]
 fzf = "0.73.1"

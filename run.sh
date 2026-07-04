@@ -25,7 +25,7 @@ Options:
 
 Commands:
   install               Install GNU Stow if needed, install mise/tools, stow all packages, then install tmux TPM/plugins
-  install-stow          Install GNU Stow using a supported package manager
+  install-stow          Install GNU Stow using brew on macOS or pacman on Linux
   install-zsh           Stow only the zsh package into $HOME
   install-mise          Install mise if needed, stow only the mise package into $HOME, then run mise install
   install-starship      Stow only the starship package into $HOME
@@ -53,20 +53,15 @@ install_stow() {
     return 0
   fi
 
+  log_step "Installing stow"
+
   if command -v brew >/dev/null 2>&1; then
     brew install stow
-  elif command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update
-    sudo apt-get install -y stow
-  elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y stow
-  elif command -v yay >/dev/null 2>&1; then
-    yay -Sy --noconfirm stow
   elif command -v pacman >/dev/null 2>&1; then
     sudo pacman -Sy --noconfirm stow
   else
     echo "Could not find a supported package manager to install stow"
-    echo "Please install GNU Stow manually and rerun this script"
+    echo "Expected brew on macOS or pacman on Linux"
     exit 1
   fi
 }
@@ -173,8 +168,8 @@ install_zsh() {
 }
 
 install_mise() {
-  ensure_stow
   install_mise_binary
+  install_stow
   log_step "Stowing mise configuration"
   run_stow "" mise
 
@@ -329,7 +324,6 @@ done
 
 case "${COMMAND}" in
   install)
-    install_stow
     install_mise
     install_zsh
     install_starship

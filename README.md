@@ -133,12 +133,13 @@ Remove all symlinks created by stow in reverse order:
 - Symlinks target `$HOME`
 - If a target file already exists, `stow` may report a conflict
 - Back up or remove conflicting files before installing
-- `install-stow` supports `brew`, `apt-get`, `dnf`, `yay`, and `pacman`
+- `install-stow` uses `brew` on macOS or `pacman` on Linux
+- `mise` bootstrap package definitions currently include `brew:stow` for macOS and `pacman:stow` for Linux
 - `mise` bootstrap currently supports `zsh` and `bash` based on `$SHELL`
 - `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
 - `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
 - `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`)
-- `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, stows its config, and runs `mise install`
+- `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, ensures `stow` is installed, stows its config, and runs `mise install`
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
 - `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, and `install-agent-skills` each stow only their matching package
 - `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, and `remove-agent-skills` each unstow only their matching package
