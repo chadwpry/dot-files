@@ -11,7 +11,9 @@ Packages are processed in this install/rebuild order:
 3. `starship`
 4. `tmux`
 5. `nvim`
-6. `agents`
+6. `ghostty`
+7. `btop`
+8. `agents`
 
 For removal, the script runs the individual remove commands in reverse order.
 
@@ -36,7 +38,7 @@ To skip the automatic shell reload at the end:
 ./run.sh install --no-reload-shell
 ```
 
-This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
+This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
 
 ### 2. Individual Commands
 
@@ -61,6 +63,7 @@ Install packages individually:
 ./run.sh install-tmux
 ./run.sh install-nvim
 ./run.sh install-ghostty
+./run.sh install-btop
 ./run.sh install-agent-skills
 ```
 
@@ -79,6 +82,7 @@ Remove packages individually:
 ./run.sh remove-tmux
 ./run.sh remove-nvim
 ./run.sh remove-ghostty
+./run.sh remove-btop
 ./run.sh remove-agent-skills
 ```
 
@@ -88,7 +92,7 @@ Install all dotfile packages at once:
 ./run.sh install-dotfiles
 ```
 
-`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, `nvim`, and `ghostty`.
+`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, and `btop`.
 
 Install tmux TPM and the tmux plugins declared in `tmux/.config/tmux/tmux.conf`:
 
@@ -140,9 +144,9 @@ Remove all symlinks created by stow in reverse order:
 - `mise` bootstrap currently supports `zsh` and `bash` based on `$SHELL`
 - `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
 - `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
-- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`, and `ghostty`)
+- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, and `btop`)
 - `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, ensures system bootstrap packages are installed, stows its config, and runs `mise install`
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
-- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, and `install-agent-skills` each stow only their matching package
-- `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, and `remove-agent-skills` each unstow only their matching package
+- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, and `install-agent-skills` each stow only their matching package
+- `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, and `remove-agent-skills` each unstow only their matching package
 - `remove` runs all package remove commands in reverse install order

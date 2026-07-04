@@ -8,6 +8,7 @@ DOTFILE_PACKAGES=(
   tmux
   nvim
   ghostty
+  btop
 )
 
 AGENT_PACKAGES=(
@@ -33,6 +34,7 @@ Commands:
   install-tmux          Stow only the tmux package into $HOME
   install-nvim          Stow only the nvim package into $HOME
   install-ghostty       Stow only the ghostty package into $HOME
+  install-btop          Stow only the btop package into $HOME
   install-agent-skills  Stow only the agents package into $HOME
   install-dotfiles      Install mise/tools, then stow all dotfile packages into $HOME
   install-tmux-tpm      Clone TPM into the tmux package and install tmux plugins from tmux.conf
@@ -42,6 +44,7 @@ Commands:
   remove-tmux           Unstow only the tmux package from $HOME
   remove-nvim           Unstow only the nvim package from $HOME
   remove-ghostty        Unstow only the ghostty package from $HOME
+  remove-btop           Unstow only the btop package from $HOME
   remove-agent-skills   Unstow only the agents package from $HOME
   rebuild               Re-stow all packages (rebuild symlinks)
   remove                Unstow all installed package symlinks from $HOME
@@ -203,6 +206,11 @@ install_ghostty() {
   run_stow "" ghostty
 }
 
+install_btop() {
+  log_step "Stowing btop configuration"
+  run_stow "" btop
+}
+
 install_agent_skills() {
   log_step "Stowing agent skills"
   run_stow "" agents
@@ -236,6 +244,11 @@ remove_nvim() {
 remove_ghostty() {
   log_step "Removing ghostty configuration"
   run_stow "-D" ghostty
+}
+
+remove_btop() {
+  log_step "Removing btop configuration"
+  run_stow "-D" btop
 }
 
 remove_agent_skills() {
@@ -343,6 +356,7 @@ case "${COMMAND}" in
     install_tmux
     install_nvim
     install_ghostty
+    install_btop
     install_agent_skills
     install_tmux_tpm
     reload_shell_if_requested
@@ -369,6 +383,9 @@ case "${COMMAND}" in
   install-ghostty)
     install_ghostty
     ;;
+  install-btop)
+    install_btop
+    ;;
   install-agent-skills)
     install_agent_skills
     ;;
@@ -379,6 +396,7 @@ case "${COMMAND}" in
     install_tmux
     install_nvim
     install_ghostty
+    install_btop
     ;;
   install-tmux-tpm)
     install_tmux_tpm
@@ -401,6 +419,9 @@ case "${COMMAND}" in
   remove-ghostty)
     remove_ghostty
     ;;
+  remove-btop)
+    remove_btop
+    ;;
   remove-agent-skills)
     remove_agent_skills
     ;;
@@ -409,6 +430,7 @@ case "${COMMAND}" in
     ;;
   remove)
     remove_agent_skills
+    remove_btop
     remove_ghostty
     remove_nvim
     remove_tmux
