@@ -4,16 +4,16 @@ This repo uses [GNU Stow](https://www.gnu.org/software/stow/) to manage dotfiles
 
 ## Packages managed by Stow
 
-They are processed in this install/rebuild order:
+Packages are processed in this install/rebuild order:
 
-1. `zsh`
-2. `mise`
+1. `mise`
+2. `zsh`
 3. `starship`
 4. `tmux`
 5. `nvim`
 6. `agents`
 
-For removal, the script unstows them in reverse order.
+For removal, the script runs the individual remove commands in reverse order.
 
 ## Prerequisites
 
@@ -30,7 +30,13 @@ For a full setup on a new machine, run:
 ./run.sh install
 ```
 
-This installs GNU Stow if needed, stows all dotfiles in the defined order, then bootstraps TPM and installs tmux plugins from `tmux.conf`.
+To skip the automatic shell reload at the end:
+
+```bash
+./run.sh install --no-reload-shell
+```
+
+This installs GNU Stow if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
 
 ### 2. Individual Commands
 
@@ -46,11 +52,41 @@ Preview dotfile changes first:
 ./run.sh dry-run
 ```
 
-Install dotfiles only:
+Install packages individually:
+
+```bash
+./run.sh install-mise
+./run.sh install-zsh
+./run.sh install-starship
+./run.sh install-tmux
+./run.sh install-nvim
+./run.sh install-agent-skills
+```
+
+You can also skip shell reload for `install-zsh`:
+
+```bash
+./run.sh install-zsh --no-reload-shell
+```
+
+Remove packages individually:
+
+```bash
+./run.sh remove-zsh
+./run.sh remove-mise
+./run.sh remove-starship
+./run.sh remove-tmux
+./run.sh remove-nvim
+./run.sh remove-agent-skills
+```
+
+Install all dotfile packages at once:
 
 ```bash
 ./run.sh install-dotfiles
 ```
+
+`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, and `nvim`.
 
 Install tmux TPM and the tmux plugins declared in `tmux/.config/tmux/tmux.conf`:
 
@@ -98,5 +134,12 @@ Remove all symlinks created by stow in reverse order:
 - If a target file already exists, `stow` may report a conflict
 - Back up or remove conflicting files before installing
 - `install-stow` supports `brew`, `apt-get`, `dnf`, `yay`, and `pacman`
-- `install` is the one-command bootstrap for a new machine
-- `install-dotfiles` applies the managed configs without reinstalling prerequisites
+- `mise` bootstrap currently supports `zsh` and `bash` based on `$SHELL`
+- `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
+- `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
+- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`)
+- `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, stows its config, and runs `mise install`
+- `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
+- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, and `install-agent-skills` each stow only their matching package
+- `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, and `remove-agent-skills` each unstow only their matching package
+- `remove` runs all package remove commands in reverse install order

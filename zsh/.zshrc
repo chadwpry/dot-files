@@ -4,8 +4,16 @@ export LIBPQ_INSTALL="/opt/homebrew/opt/libpq/bin"
 
 export PATH="$LIBPQ_INSTALL:$BUN_INSTALL:$PATH"
 
-eval "$(~/.local/bin/mise activate zsh)"
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+elif [[ -x "$HOME/.local/bin/mise" ]]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+fi
 
-eval "$(starship init zsh)"
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
 
-source <(fzf --zsh)
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
