@@ -6,4 +6,6 @@ export PATH="$LIBPQ_INSTALL:$BUN_INSTALL:$PATH"
 
 eval "$(~/.local/bin/mise activate zsh)"
 
+eval "$(starship init zsh)"
+
 source <(fzf --zsh)
