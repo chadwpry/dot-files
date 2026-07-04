@@ -7,6 +7,7 @@ DOTFILE_PACKAGES=(
   starship
   tmux
   nvim
+  ghostty
 )
 
 AGENT_PACKAGES=(
@@ -31,6 +32,7 @@ Commands:
   install-starship      Stow only the starship package into $HOME
   install-tmux          Stow only the tmux package into $HOME
   install-nvim          Stow only the nvim package into $HOME
+  install-ghostty       Stow only the ghostty package into $HOME
   install-agent-skills  Stow only the agents package into $HOME
   install-dotfiles      Install mise/tools, then stow all dotfile packages into $HOME
   install-tmux-tpm      Clone TPM into the tmux package and install tmux plugins from tmux.conf
@@ -39,6 +41,7 @@ Commands:
   remove-starship       Unstow only the starship package from $HOME
   remove-tmux           Unstow only the tmux package from $HOME
   remove-nvim           Unstow only the nvim package from $HOME
+  remove-ghostty        Unstow only the ghostty package from $HOME
   remove-agent-skills   Unstow only the agents package from $HOME
   rebuild               Re-stow all packages (rebuild symlinks)
   remove                Unstow all installed package symlinks from $HOME
@@ -195,6 +198,11 @@ install_nvim() {
   run_stow "" nvim
 }
 
+install_ghostty() {
+  log_step "Stowing ghostty configuration"
+  run_stow "" ghostty
+}
+
 install_agent_skills() {
   log_step "Stowing agent skills"
   run_stow "" agents
@@ -223,6 +231,11 @@ remove_tmux() {
 remove_nvim() {
   log_step "Removing neovim configuration"
   run_stow "-D" nvim
+}
+
+remove_ghostty() {
+  log_step "Removing ghostty configuration"
+  run_stow "-D" ghostty
 }
 
 remove_agent_skills() {
@@ -329,6 +342,7 @@ case "${COMMAND}" in
     install_starship
     install_tmux
     install_nvim
+    install_ghostty
     install_agent_skills
     install_tmux_tpm
     reload_shell_if_requested
@@ -352,6 +366,9 @@ case "${COMMAND}" in
   install-nvim)
     install_nvim
     ;;
+  install-ghostty)
+    install_ghostty
+    ;;
   install-agent-skills)
     install_agent_skills
     ;;
@@ -361,6 +378,7 @@ case "${COMMAND}" in
     install_starship
     install_tmux
     install_nvim
+    install_ghostty
     ;;
   install-tmux-tpm)
     install_tmux_tpm
@@ -380,6 +398,9 @@ case "${COMMAND}" in
   remove-nvim)
     remove_nvim
     ;;
+  remove-ghostty)
+    remove_ghostty
+    ;;
   remove-agent-skills)
     remove_agent_skills
     ;;
@@ -388,6 +409,7 @@ case "${COMMAND}" in
     ;;
   remove)
     remove_agent_skills
+    remove_ghostty
     remove_nvim
     remove_tmux
     remove_starship
