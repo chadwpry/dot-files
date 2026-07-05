@@ -57,7 +57,4 @@
   branch = false
 
 [include]
-  path = ~/.config/git/config-default
-
-[include]
   path = ~/.config/git/config-identities
