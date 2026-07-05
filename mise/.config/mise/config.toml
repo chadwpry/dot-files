@@ -5,6 +5,7 @@ idiomatic_version_file_enable_tools = ["ruby"]
 [bootstrap.packages]
 "brew:jq" = "1.8.2"
 "brew:stow" = "latest"
+"pacman:btop" = "latest"
 "pacman:jq" = "1.8.2"
 "pacman:stow" = "latest"
 
