@@ -25,8 +25,8 @@ Options:
   --no-reload-shell  Skip automatic shell reload for install and install-zsh
 
 Commands:
-  install               Install GNU Stow if needed, install mise/tools, stow all packages, then install tmux TPM/plugins
-  install-stow          Install GNU Stow using brew on macOS or pacman on Linux
+  install               Install system bootstrap packages if needed, install mise/tools, stow all packages, then install tmux TPM/plugins
+  install-system        Install system bootstrap packages (jq and stow) using brew or pacman
   install-zsh           Stow only the zsh package into $HOME
   install-mise          Install mise if needed, stow only the mise package into $HOME, then run mise install
   install-starship      Stow only the starship package into $HOME
@@ -50,20 +50,20 @@ Commands:
 EOF
 }
 
-install_stow() {
-  if command -v stow >/dev/null 2>&1; then
-    echo "stow is already installed"
+install_system() {
+  if command -v jq >/dev/null 2>&1 && command -v stow >/dev/null 2>&1; then
+    echo "system bootstrap packages are already installed"
     return 0
   fi
 
-  log_step "Installing stow"
+  log_step "Installing system bootstrap packages"
 
   if command -v brew >/dev/null 2>&1; then
-    brew install stow
+    brew install jq stow
   elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -Sy --noconfirm stow
+    sudo pacman -Sy --noconfirm jq stow
   else
-    echo "Could not find a supported package manager to install stow"
+    echo "Could not find a supported package manager"
     echo "Expected brew on macOS or pacman on Linux"
     exit 1
   fi
@@ -72,7 +72,7 @@ install_stow() {
 ensure_stow() {
   if ! command -v stow >/dev/null 2>&1; then
     echo "stow is not installed"
-    echo "Run: ./run.sh install-stow"
+    echo "Run: ./run.sh install-system"
     exit 1
   fi
 }
@@ -172,7 +172,7 @@ install_zsh() {
 
 install_mise() {
   install_mise_binary
-  install_stow
+  install_system
   log_step "Stowing mise configuration"
   run_stow "" mise
 
@@ -347,8 +347,8 @@ case "${COMMAND}" in
     install_tmux_tpm
     reload_shell_if_requested
     ;;
-  install-stow)
-    install_stow
+  install-system)
+    install_system
     ;;
   install-zsh)
     install_zsh
