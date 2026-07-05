@@ -156,36 +156,29 @@ Remove all symlinks created by stow in reverse order:
 
 ## Git identity configuration
 
-The git config in this repo uses Git conditional includes to switch the commit `[user]` name and email based on the repository's remote URL. The default identity is also kept outside the committed config so it can vary per machine or user.
+The git config in this repo uses Git conditional includes to switch the commit `[user]` name and email based on the repository's remote URL. Your fallback identity lives directly in `~/.config/git/config-identities`, with optional conditional overrides below it.
 
 ### How it works
 
-1. The main config (`git/.config/git/config`) includes two local files at the end:
+1. The main config (`git/.config/git/config`) includes one local file at the end:
 
 ```ini
-[include]
-  path = ~/.config/git/config-default
-
 [include]
   path = ~/.config/git/config-identities
 ```
 
-2. `~/.config/git/config-default` is **not committed** (it is ignored by `git/.config/git/.gitignore`). It holds the fallback `[user]` values used when no conditional rule matches:
+2. `~/.config/git/config-identities` is **not committed** (it is ignored by `git/.config/git/.gitignore`). It contains your default `[user]` identity at the top plus any `includeIf` rules for more specific identities:
 
 ```ini
 [user]
   name = Your Name
   email = your.default.email@example.com
-```
 
-3. `~/.config/git/config-identities` is also **not committed**. It contains `includeIf` rules that load a more specific identity file when a repository's remote URL matches a pattern:
-
-```ini
 [includeIf "hasconfig:remote.*.url:git@github.com:my-org/**"]
   path = config-my-org
 ```
 
-4. The matched identity file only overrides the `[user]` section:
+3. A matched identity file overrides the `[user]` section:
 
 ```ini
 [user]
@@ -193,23 +186,20 @@ The git config in this repo uses Git conditional includes to switch the commit `
   email = your.work.email@example.com
 ```
 
-The order of the two `[include]` blocks matters: `config-default` is loaded first, then `config-identities` can selectively override it for matching remotes.
-
 ### Setting up your identities
 
-1. Create the default identity file:
-
-```bash
-# git/.config/git/config-default
-[user]
-  name = Your Name
-  email = your.default.email@example.com
-```
-
-2. Copy the conditional-include template:
+1. Copy the template:
 
 ```bash
 cp git/.config/git/config-identities.template git/.config/git/config-identities
+```
+
+2. Edit `git/.config/git/config-identities` and set your default identity at the top:
+
+```ini
+[user]
+  name = Your Name
+  email = your.default.email@example.com
 ```
 
 3. Create a per-identity file, for example `git/.config/git/config-work`:
@@ -239,4 +229,4 @@ cp git/.config/git/config-identities.template git/.config/git/config-identities
 
 If someone asks how the identity switching works, you can share this short summary:
 
-> Our dotfiles use Git's conditional includes. The main git config first loads `~/.config/git/config-default` for the fallback `[user]` name/email, then loads `~/.config/git/config-identities` to check a repo's remote URL and override the identity for matching remotes. Both files are gitignored, so they stay personal and are never committed. To set them up, create `config-default`, copy `config-identities.template` to `config-identities`, create a `config-<name>` file with your per-context `[user]` details, add the matching `includeIf` rule, and run `./run.sh install-git`.
+> Our dotfiles use Git's conditional includes. The main git config loads `~/.config/git/config-identities`, which contains your default `[user]` name/email at the top plus optional `includeIf` rules for repo-specific identities. Matching rules load `config-<name>` files that override the identity for those repos. These files are gitignored, so they stay personal and are never committed. To set them up, copy `config-identities.template` to `config-identities`, set your default identity there, create any `config-<name>` override files you need, add the matching `includeIf` rules, and run `./run.sh install-git`.

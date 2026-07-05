@@ -1,2 +1,6 @@
-#[includeIf "hasconfig:remote.*.url:git@github.com:my-organization-or-user/**"]
-#  path = config-my-organization-or-user
+[user]
+  name = Chad Pry
+  email = chad@my-personal-email
+
+[includeIf "hasconfig:remote.*.url:git@github.com:example/**"]
+  path = config-example
