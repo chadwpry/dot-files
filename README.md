@@ -153,3 +153,90 @@ Remove all symlinks created by stow in reverse order:
 - `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, and `install-agent-skills` each stow only their matching package
 - `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, `remove-git`, and `remove-agent-skills` each unstow only their matching package
 - `remove` runs all package remove commands in reverse install order
+
+## Git identity configuration
+
+The git config in this repo uses Git conditional includes to switch the commit `[user]` name and email based on the repository's remote URL. The default identity is also kept outside the committed config so it can vary per machine or user.
+
+### How it works
+
+1. The main config (`git/.config/git/config`) includes two local files at the end:
+
+```ini
+[include]
+  path = ~/.config/git/config-default
+
+[include]
+  path = ~/.config/git/config-identities
+```
+
+2. `~/.config/git/config-default` is **not committed** (it is ignored by `git/.config/git/.gitignore`). It holds the fallback `[user]` values used when no conditional rule matches:
+
+```ini
+[user]
+  name = Your Name
+  email = your.default.email@example.com
+```
+
+3. `~/.config/git/config-identities` is also **not committed**. It contains `includeIf` rules that load a more specific identity file when a repository's remote URL matches a pattern:
+
+```ini
+[includeIf "hasconfig:remote.*.url:git@github.com:my-org/**"]
+  path = config-my-org
+```
+
+4. The matched identity file only overrides the `[user]` section:
+
+```ini
+[user]
+  name = Your Name
+  email = your.work.email@example.com
+```
+
+The order of the two `[include]` blocks matters: `config-default` is loaded first, then `config-identities` can selectively override it for matching remotes.
+
+### Setting up your identities
+
+1. Create the default identity file:
+
+```bash
+# git/.config/git/config-default
+[user]
+  name = Your Name
+  email = your.default.email@example.com
+```
+
+2. Copy the conditional-include template:
+
+```bash
+cp git/.config/git/config-identities.template git/.config/git/config-identities
+```
+
+3. Create a per-identity file, for example `git/.config/git/config-work`:
+
+```ini
+[user]
+  name = Your Name
+  email = your.work.email@example.com
+```
+
+4. Add a conditional include in `git/.config/git/config-identities`:
+
+```ini
+[includeIf "hasconfig:remote.*.url:git@github.com:my-org/**"]
+  path = config-work
+```
+
+5. Re-stow the git package so the files are linked into `~/.config/git/`:
+
+```bash
+./run.sh install-git
+```
+
+6. Test it by running `git config user.email` inside repositories whose remote URLs match and do not match the pattern.
+
+### Sharing the setup with teammates
+
+If someone asks how the identity switching works, you can share this short summary:
+
+> Our dotfiles use Git's conditional includes. The main git config first loads `~/.config/git/config-default` for the fallback `[user]` name/email, then loads `~/.config/git/config-identities` to check a repo's remote URL and override the identity for matching remotes. Both files are gitignored, so they stay personal and are never committed. To set them up, create `config-default`, copy `config-identities.template` to `config-identities`, create a `config-<name>` file with your per-context `[user]` details, add the matching `includeIf` rule, and run `./run.sh install-git`.

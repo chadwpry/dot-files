@@ -56,9 +56,8 @@
 [pager]
   branch = false
 
-[user]
-  name = "Chad Pry"
-  email = "chad.pry@gmail.com"
+[include]
+  path = ~/.config/git/config-default
 
 [include]
   path = ~/.config/git/config-identities
