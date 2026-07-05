@@ -1,0 +1,2 @@
+#[includeIf "hasconfig:remote.*.url:git@github.com:my-organization-or-user/**"]
+#  path = config-my-organization-or-user

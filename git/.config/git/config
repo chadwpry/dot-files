@@ -60,8 +60,5 @@
   name = "Chad Pry"
   email = "chad.pry@gmail.com"
 
-[includeIf "hasconfig:remote.*.url:git@github-work:*/**"]
-  path = ~/.config/git/config-work
-
-[includeIf "hasconfig:remote.*.url:git@github-other:*/**"]
-  path = ~/.config/git/config-other
+[include]
+  path = ~/.config/git/config-identities
