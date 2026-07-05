@@ -1,2 +1,2 @@
-config-other
-config-work
+config-*
+!config-*.template
