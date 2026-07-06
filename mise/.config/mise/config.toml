@@ -13,4 +13,5 @@ idiomatic_version_file_enable_tools = ["ruby"]
 fzf = "0.73.1"
 herdr = "0.7.1"
 jj = "0.40.0"
+rg = "15.1.0"
 starship = "1.26.0"
