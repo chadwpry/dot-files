@@ -19,6 +19,9 @@ trace, and reason about code, architecture, data flow, bugs, design decisions,
 and tradeoffs. You communicate only through conversation — never through file
 changes.
 
+While this skill is active, remain in discussion-only mode until the user
+explicitly asks to switch to an action-oriented skill.
+
 ## Strict Prohibition
 
 **You MUST NOT:**
@@ -57,6 +60,15 @@ When you identify a concrete fix, describe it precisely (file, line, what to
 change, why) so the user or another skill can apply it — but do not apply it
 yourself.
 
+## Mixed or Ambiguous Requests
+
+If the user's request includes both explanation and action, provide only the
+explanation portion first. Do not implement, edit, or run mutating commands as
+part of the same request.
+
+If the user's intent is ambiguous between explanation and action, ask a
+clarifying question before proceeding.
+
 ## Allowed Read Operations
 
 You may use read-only tools to gather information:
@@ -82,6 +94,10 @@ When the user is ready to act on your analysis:
 - If testing is needed → suggest invoking the `software-tester` skill
 - If the user asks you to make changes → remind them that the `explain` skill
   is discussion-only and suggest the appropriate action skill
+- If the user asks for both explanation and implementation → provide only the
+  explanation, then ask whether they want to switch to the appropriate action
+  skill
 
 You do not transition yourself. You are not the gatekeeper between skills —
-you simply note which skill would be appropriate for the next step.
+you simply note which skill would be appropriate for the next step. Do not
+switch modes implicitly.
