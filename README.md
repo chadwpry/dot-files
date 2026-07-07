@@ -14,7 +14,8 @@ Packages are processed in this install/rebuild order:
 6. `ghostty`
 7. `btop`
 8. `git`
-9. `agents`
+9. `psql`
+10. `agents`
 
 For removal, the script runs the individual remove commands in reverse order.
 
@@ -39,7 +40,7 @@ To skip the automatic shell reload at the end:
 ./run.sh install --no-reload-shell
 ```
 
-This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
+This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, `psql`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
 
 ### 2. Individual Commands
 
@@ -66,6 +67,7 @@ Install packages individually:
 ./run.sh install-ghostty
 ./run.sh install-btop
 ./run.sh install-git
+./run.sh install-psql
 ./run.sh install-agent-skills
 ```
 
@@ -86,6 +88,7 @@ Remove packages individually:
 ./run.sh remove-ghostty
 ./run.sh remove-btop
 ./run.sh remove-git
+./run.sh remove-psql
 ./run.sh remove-agent-skills
 ```
 
@@ -95,7 +98,7 @@ Install all dotfile packages at once:
 ./run.sh install-dotfiles
 ```
 
-`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, and `git`.
+`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `psql`.
 
 Install tmux TPM and the tmux plugins declared in `tmux/.config/tmux/tmux.conf`:
 
@@ -147,12 +150,29 @@ Remove all symlinks created by stow in reverse order:
 - `mise` bootstrap currently supports `zsh` and `bash` based on `$SHELL`
 - `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
 - `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
-- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, and `git`)
+- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `psql`)
 - `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, ensures system bootstrap packages are installed, stows its config, and runs `mise install`
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
-- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, and `install-agent-skills` each stow only their matching package
-- `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, `remove-git`, and `remove-agent-skills` each unstow only their matching package
+- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, `install-psql`, and `install-agent-skills` each stow only their matching package
+- `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, `remove-git`, `remove-psql`, and `remove-agent-skills` each unstow only their matching package
 - `remove` runs all package remove commands in reverse install order
+
+## psql configuration
+
+The `psql` package manages `~/.psqlrc` and sets the pager to `less -SRXF` on startup:
+
+```psql
+\setenv PAGER 'less -SRXF'
+\pset pager always
+```
+
+To apply just the PostgreSQL client config:
+
+```bash
+./run.sh install-psql
+```
+
+This creates a symlink at `~/.psqlrc` via Stow.
 
 ## Git identity configuration
 

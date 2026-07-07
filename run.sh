@@ -10,6 +10,7 @@ DOTFILE_PACKAGES=(
   ghostty
   btop
   git
+  psql
 )
 
 AGENT_PACKAGES=(
@@ -37,6 +38,7 @@ Commands:
   install-ghostty       Stow only the ghostty package into $HOME
   install-btop          Stow only the btop package into $HOME
   install-git           Stow only the git package into $HOME
+  install-psql          Stow only the psql package into $HOME
   install-agent-skills  Stow only the agents package into $HOME
   install-dotfiles      Install mise/tools, then stow all dotfile packages into $HOME
   install-tmux-tpm      Clone TPM into the tmux package and install tmux plugins from tmux.conf
@@ -48,6 +50,7 @@ Commands:
   remove-ghostty        Unstow only the ghostty package from $HOME
   remove-btop           Unstow only the btop package from $HOME
   remove-git            Unstow only the git package from $HOME
+  remove-psql           Unstow only the psql package from $HOME
   remove-agent-skills   Unstow only the agents package from $HOME
   rebuild               Re-stow all packages (rebuild symlinks)
   remove                Unstow all installed package symlinks from $HOME
@@ -219,6 +222,11 @@ install_git() {
   run_stow "" git
 }
 
+install_psql() {
+  log_step "Stowing psql configuration"
+  run_stow "" psql
+}
+
 install_agent_skills() {
   log_step "Stowing agent skills"
   run_stow "" agents
@@ -262,6 +270,11 @@ remove_btop() {
 remove_git() {
   log_step "Removing git configuration"
   run_stow "-D" git
+}
+
+remove_psql() {
+  log_step "Removing psql configuration"
+  run_stow "-D" psql
 }
 
 remove_agent_skills() {
@@ -371,6 +384,7 @@ case "${COMMAND}" in
     install_ghostty
     install_btop
     install_git
+    install_psql
     install_agent_skills
     install_tmux_tpm
     reload_shell_if_requested
@@ -403,6 +417,9 @@ case "${COMMAND}" in
   install-git)
     install_git
     ;;
+  install-psql)
+    install_psql
+    ;;
   install-agent-skills)
     install_agent_skills
     ;;
@@ -415,6 +432,7 @@ case "${COMMAND}" in
     install_ghostty
     install_btop
     install_git
+    install_psql
     ;;
   install-tmux-tpm)
     install_tmux_tpm
@@ -443,6 +461,9 @@ case "${COMMAND}" in
   remove-git)
     remove_git
     ;;
+  remove-psql)
+    remove_psql
+    ;;
   remove-agent-skills)
     remove_agent_skills
     ;;
@@ -451,14 +472,15 @@ case "${COMMAND}" in
     ;;
   remove)
     remove_agent_skills
-    remove_btop
+    remove_psql
     remove_git
+    remove_btop
     remove_ghostty
     remove_nvim
     remove_tmux
     remove_starship
-    remove_mise
     remove_zsh
+    remove_mise
     ;;
   dry-run)
     run_stow "-n" "${DOTFILE_PACKAGES[@]}"
