@@ -40,7 +40,6 @@ Commands:
   install-git           Stow only the git package into $HOME
   install-psql          Stow only the psql package into $HOME
   install-agent-skills  Stow only the agents package into $HOME
-  install-dotfiles      Install mise/tools, then stow all dotfile packages into $HOME
   install-tmux-tpm      Clone TPM into the tmux package and install tmux plugins from tmux.conf
   remove-zsh            Unstow only the zsh package from $HOME
   remove-mise           Unstow only the mise package from $HOME
@@ -54,7 +53,7 @@ Commands:
   remove-agent-skills   Unstow only the agents package from $HOME
   rebuild               Re-stow all packages (rebuild symlinks)
   remove                Unstow all installed package symlinks from $HOME
-  dry-run               Preview what install-dotfiles would do
+  dry-run               Preview what stowing the dotfile packages would do
   help                  Show this help
 EOF
 }
@@ -422,17 +421,6 @@ case "${COMMAND}" in
     ;;
   install-agent-skills)
     install_agent_skills
-    ;;
-  install-dotfiles)
-    install_mise
-    install_zsh
-    install_starship
-    install_tmux
-    install_nvim
-    install_ghostty
-    install_btop
-    install_git
-    install_psql
     ;;
   install-tmux-tpm)
     install_tmux_tpm

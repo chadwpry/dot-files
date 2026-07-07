@@ -92,14 +92,6 @@ Remove packages individually:
 ./run.sh remove-agent-skills
 ```
 
-Install all dotfile packages at once:
-
-```bash
-./run.sh install-dotfiles
-```
-
-`install-dotfiles` installs `mise` if needed, stows the `mise` config, runs `mise install`, then stows `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `psql`.
-
 Install tmux TPM and the tmux plugins declared in `tmux/.config/tmux/tmux.conf`:
 
 ```bash
@@ -108,7 +100,7 @@ Install tmux TPM and the tmux plugins declared in `tmux/.config/tmux/tmux.conf`:
 
 ### 3. Install tmux TPM
 
-Run this after `install-dotfiles` if you want to bootstrap TPM separately:
+Run this after installing dotfiles individually if you want to bootstrap TPM separately:
 
 ```bash
 ./run.sh install-tmux-tpm
@@ -150,7 +142,6 @@ Remove all symlinks created by stow in reverse order:
 - `mise` bootstrap currently supports `zsh` and `bash` based on `$SHELL`
 - `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
 - `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
-- `install-dotfiles` installs `mise` if needed, runs `mise install`, and applies the dotfile packages (`mise`, `zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `psql`)
 - `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, ensures system bootstrap packages are installed, stows its config, and runs `mise install`
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
 - `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, `install-psql`, and `install-agent-skills` each stow only their matching package
