@@ -4,7 +4,7 @@ This repo uses [GNU Stow](https://www.gnu.org/software/stow/) to manage dotfiles
 
 ## Packages managed by Stow
 
-Packages are processed in this install/rebuild order:
+Packages are processed in this install/restow order:
 
 1. `mise`
 2. `zsh`
@@ -116,12 +116,12 @@ What it does:
 
 This step requires both `git` and `tmux` to be installed.
 
-### 4. Rebuild
+### 4. Restow
 
 Use this after changing files in the repo to refresh symlinks in the same defined order:
 
 ```bash
-./run.sh rebuild
+./run.sh restow
 ```
 
 ### 5. Remove
@@ -146,6 +146,7 @@ Remove all symlinks created by stow in reverse order:
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
 - `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, `install-psql`, and `install-agent-skills` each stow only their matching package
 - `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, `remove-git`, `remove-psql`, and `remove-agent-skills` each unstow only their matching package
+- `restow` re-stows all managed packages to refresh symlinks after repo changes
 - `remove` runs all package remove commands in reverse install order
 
 ## psql configuration

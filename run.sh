@@ -51,7 +51,7 @@ Commands:
   remove-git            Unstow only the git package from $HOME
   remove-psql           Unstow only the psql package from $HOME
   remove-agent-skills   Unstow only the agents package from $HOME
-  rebuild               Re-stow all packages (rebuild symlinks)
+  restow                Re-stow all packages (refresh symlinks)
   remove                Unstow all installed package symlinks from $HOME
   dry-run               Preview what stowing the dotfile packages would do
   help                  Show this help
@@ -455,7 +455,7 @@ case "${COMMAND}" in
   remove-agent-skills)
     remove_agent_skills
     ;;
-  rebuild)
+  restow)
     run_stow "-R" "${DOTFILE_PACKAGES[@]}" "${AGENT_PACKAGES[@]}"
     ;;
   remove)
