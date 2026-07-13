@@ -10,6 +10,7 @@ idiomatic_version_file_enable_tools = ["ruby"]
 "pacman:stow" = "latest"
 
 [tools]
+bat = "0.26.1"
 fzf = "0.73.1"
 herdr = "0.7.1"
 jj = "0.40.0"
