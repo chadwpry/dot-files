@@ -21,3 +21,9 @@ fi
 if [[ -r "$HOME/.config/zsh/podman-docker.zsh" ]]; then
   source "$HOME/.config/zsh/podman-docker.zsh"
 fi
+
+# Added by dbt installer
+export PATH="$PATH:/Users/cpry/.local/bin"
+
+# dbt aliases
+alias dbtf=/Users/cpry/.local/bin/dbt

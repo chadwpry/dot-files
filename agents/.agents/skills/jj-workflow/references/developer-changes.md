@@ -1,33 +1,27 @@
-# Developer Change Discipline
+# Developer Change Scope
 
-What constitutes a "logical unit of work" when writing code, configuration, and infrastructure.
+Use this guidance to determine whether development work fits the user-prepared active jj change. It does not authorize the developer to create, select, describe, advance, or rewrite changes.
 
 ## Logical Units of Work
 
-A logical unit of work for the developer is:
+A logical unit of development work may be:
 
-- A single file or closely related group of files serving one purpose (e.g., a Dockerfile, a config file and its companion .env.example).
+- A single file or closely related group of files serving one purpose (for example, a Dockerfile and its companion `.env.example`).
 - A single feature, fix, or refactor that can be described in one sentence.
 - A test file or test suite addition.
 - A documentation update.
 
-## Change Size Guidance
+## Scope Guidance
 
-- Prefer small, focused changes — typically 1-3 files and under ~200 lines of diff.
-- If a change is growing larger, stop and split it into smaller logical units.
-- A good change can be reviewed in isolation and understood without scrolling through unrelated context.
-- When in doubt, err on the side of smaller. Two small changes are better than one sprawling change.
+- Prefer focused work—typically 1–3 files and under roughly 200 changed lines.
+- Avoid unrelated files, WIP across multiple features, and separable implementation, test, and documentation work in the same change.
+- If the work exceeds the user-prepared change's scope, stop and ask the user to create or select another change.
 
-## What Does NOT Belong in a Single Change
+## Working in the Active Change
 
-- Unrelated files grouped together for convenience.
-- "WIP" dumps of partial progress across multiple features.
-- Mixing implementation work with test work with documentation work unless they are inseparable.
-- Changes large enough that the description needs more than one or two sentences to explain.
+1. Inspect `jj st` and `jj log`.
+2. Confirm the user-selected change's description covers the work.
+3. Edit or create files only within that change.
+4. Review with `jj diff`.
 
-## Workflow Per Change
-
-1. Describe the intent first: `jj describe -m "what this change does and why"`.
-2. Do the work (edit/create files).
-3. Review with `jj diff` to confirm the work matches the description.
-4. Advance: `jj new`.
+Do not run `jj init`, `jj new`, `jj describe`, `jj edit`, or `jj squash`.

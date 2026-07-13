@@ -56,13 +56,13 @@ Follow the format and guidelines defined in `docs-standards` for this section. E
 
 ## Version Control: jj (Jujutsu)
 
-All version control operations follow the **`jj-workflow`** skill. Load it with `/skill:jj-workflow` for the command reference, mandatory change discipline, and version control workflow.
+Follow the **`jj-workflow`** skill. The human owns jj history.
 
-Before planning any new project, enforce the jj prerequisite defined in `jj-workflow`: `jj` must be installed and available on `PATH`. If it is not installed, inform the user and halt planning work. Do not attempt to install `jj` for the user. If no repository exists, initialize one with `jj` before proceeding.
+Before planning, verify that `jj` is available and inspect the active change with `jj st` and `jj log`. Work only in a user-created, user-selected active change with an appropriate description. If `jj` is unavailable, no repository exists, or no suitable active change is selected, stop and ask the user to resolve it.
 
 ### Change Discipline for the Planner
 
-Every logical unit of work MUST be recorded as its own jj change following the discipline defined in `jj-workflow`. What constitutes a logical unit of work for the planner is defined in `jj-workflow/references/planner-changes.md`: creating a new specification document, updating a single document section, resolving conflicts between documents, or adding a Corrections and Decisions entry.
+Do **not** run `jj init`, `jj new`, `jj describe`, `jj edit`, `jj squash`, or any other command that creates, selects, describes, advances, or rewrites a jj change. Do not create a new change for a logical unit of planning work. Make all planning edits in the active change the user prepared. You may run read-only inspection commands such as `jj st`, `jj log`, and `jj diff`.
 
 ## Pre-Flight Checklist
 
@@ -70,7 +70,7 @@ Before starting or resuming planning work:
 
 1. **Read project documents efficiently.** If `docs/ONBOARDING.md` exists, read it first for quick orientation. Otherwise, run `ls docs/*.md` and read every file found. Do not skip any document.
 2. Run `jj st` and `jj log` to understand the current state of the repository.
-3. Confirm the current change has a description via `jj describe` before editing any files.
+3. Confirm from `jj log` that the user-selected current change has an appropriate description; do not modify it.
 4. Load the `docs-standards` skill to verify document structure expectations.
 5. If documents already exist, inventory their current state — what sections are present, what's missing, what conflicts exist.
 6. If documents are missing, note which ones need to be created and in what order.
@@ -89,7 +89,7 @@ If critical information is missing, ask targeted questions and record decisions 
 
 ### Starting a New Project
 
-1. **Initialize the repository** with `jj` if one doesn't exist.
+1. **Ask the user to initialize and select a described jj change** if the repository or a suitable active change does not exist.
 2. **Create `docs/` directory** if it doesn't exist.
 3. **Create documents in dependency order:**
    - `docs/PRD.md` — Product requirements first (what and why)
@@ -100,7 +100,7 @@ If critical information is missing, ask targeted questions and record decisions 
    - Project-specific documents as needed
 4. **Use the templates from `docs-standards`** as starting structure for each document.
 5. **Create `docs/ONBOARDING.md`** after all core docs are written, synthesizing their key points into a condensed summary (~2-5K tokens). Follow the ONBOARDING.md spec in `docs-standards`.
-6. **Record each document creation as a separate jj change:** `jj describe -m "create docs/PRD.md with initial structure"`, then create the file, then `jj new`.
+6. Create the documents within the user-selected active change. Do not create or advance jj changes.
 
 ### Refining Existing Documents
 
@@ -108,7 +108,7 @@ If critical information is missing, ask targeted questions and record decisions 
 2. **Identify gaps** by comparing each document against the `docs-standards` quality checklists.
 3. **Resolve conflicts** between documents using the document hierarchy.
 4. **Add Corrections and Decisions entries** for any wrong paths or changed assumptions discovered during refinement.
-5. **Record meaningful updates as separate jj changes** — don't batch unrelated edits into one change.
+5. Keep updates coherent with the active change's user-provided description. If work needs a different change, stop and ask the user to create or select it.
 
 ### Cross-Document Consistency
 
@@ -121,6 +121,16 @@ When you update one document, check whether other documents need corresponding u
 - Any core doc update → does ONBOARDING.md need updating? (status, tech stack, key decisions, project structure)
 
 Every document update must maintain consistency across the entire `docs/` folder, including ONBOARDING.md.
+
+## Diagram Guidance
+
+When an architecture, workflow, runtime interaction, deployment boundary, or data model would materially clarify a specification, propose one focused diagram. Do not add diagrams merely as decoration.
+
+1. If the user has not specified D2 or Mermaid, ask which format they want. Do not default to either.
+2. If the user selects D2, load the `d2-diagram-builder` skill. Store paired source and default render at `docs/diagrams/d2/<name>.d2` and `docs/diagrams/d2/<name>.svg`.
+3. Embed the SVG in the relevant Markdown document using a path relative to that document and link the image to the `.d2` source. Keep existing Mermaid diagrams unchanged.
+4. Select only the diagram view that answers the planning question: architecture/deployment, workflow, sequence, or ERD. Create additional views only when they answer distinct documented questions.
+5. Update the diagram and its embedding when the corresponding architectural decision changes. Treat the diagram as a maintained visual companion to the written specification, not a replacement for it.
 
 ## Planning Standard: Twelve-Factor Application
 
@@ -167,8 +177,9 @@ If any item fails, continue iteration instead of declaring completion.
 - Do not substitute architectural assumptions for missing product decisions; ask questions instead.
 - Do not mark documents as final while unresolved critical questions remain.
 - Do not proceed with new-project planning when `jj` is unavailable; require user installation first.
-- Do not install `jj` for the user.
-- Do not make file changes before writing a `jj` change description.
+- Do not install `jj` for the user or initialize a repository.
+- Do not make file changes without a suitable user-created, user-selected, described jj change.
+- Do not create, describe, advance, select, or otherwise modify jj changes.
 - Do not skip loading `docs-standards` before writing or editing documents — it defines the structure you must follow.
 - Do not leave documents inconsistent with each other after making an update.
 

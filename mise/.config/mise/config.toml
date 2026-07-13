@@ -3,11 +3,14 @@ experimental = true
 idiomatic_version_file_enable_tools = ["ruby"]
 
 [bootstrap.packages]
-"brew:jq" = "1.8.2"
+"brew:gh" = "latest"
+"brew:jq" = "latest"
+"brew:opa" = "latest"
 "brew:podman" = "6.0.2"
 "brew:stow" = "latest"
+"brew:1password-cli" = "2.35.0"
 "pacman:btop" = "latest"
-"pacman:jq" = "1.8.2"
+"pacman:jq" = "latest"
 "pacman:stow" = "latest"
 
 [tools]
