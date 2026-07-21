@@ -12,6 +12,7 @@ idiomatic_version_file_enable_tools = ["ruby"]
 [tools]
 bat = "0.26.1"
 fzf = "0.73.1"
+go = "1.26"
 herdr = "0.7.1"
 jj = "0.40.0"
 rg = "15.1.0"
