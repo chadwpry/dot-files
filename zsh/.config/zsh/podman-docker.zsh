@@ -30,7 +30,7 @@ podman_docker_configure() {
     memory="$(podman machine inspect "${machine}" --format '{{.Resources.Memory}}' 2>/dev/null)"
     if [[ "${memory}" =~ '^[0-9]+$' ]] && (( memory < 4096 )); then
       if ! podman machine set --memory 4096 "${machine}" >/dev/null; then
-        print -u2 "podman-docker: could not set ${machine} memory to 4096 MiB"
+        print -u2 "podman-docker: could not set ${machine} memory to 6144 MiB"
         return 0
       fi
     fi
