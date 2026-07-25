@@ -17,3 +17,7 @@ fi
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
 fi
+
+if [[ -r "$HOME/.config/zsh/podman-docker.zsh" ]]; then
+  source "$HOME/.config/zsh/podman-docker.zsh"
+fi
