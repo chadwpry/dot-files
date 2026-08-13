@@ -4,6 +4,11 @@ export LIBPQ_INSTALL="/opt/homebrew/opt/libpq/bin"
 
 export PATH="$LIBPQ_INSTALL:$BUN_INSTALL:$PATH"
 
+autoload -Uz compinit
+compinit
+
+compdef _make make
+
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 elif [[ -x "$HOME/.local/bin/mise" ]]; then
