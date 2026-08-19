@@ -1,24 +1,22 @@
-# Tester Change Discipline
+# Tester Change Scope
 
-What constitutes a "logical unit of work" when writing tests and validating implementations.
+Use this guidance to determine whether test work fits the user-prepared active jj change. It does not authorize the tester to create, select, describe, advance, or rewrite changes.
 
 ## Logical Units of Work
 
-A logical unit of work for the tester is:
+A logical unit of test work may be:
 
 - A single test file or test suite addition.
 - A group of related contract tests for one endpoint or service.
-- An error contract test suite for a specific error code or class.
+- An error-contract test suite for a specific error code or class.
 - A benchmark or validation script addition.
 - A test configuration update.
 
-## Workflow Per Change
+## Working in the Active Change
 
-1. Make the changes (write tests, update test config, etc.).
-2. Review with `jj diff`.
-3. Describe the change with `jj describe -m "concise description of what and why"`.
-4. Create a new empty change with `jj new` before starting the next unit of work.
+1. Inspect `jj st` and `jj log`.
+2. Confirm the user-selected change's description covers the test work.
+3. Make test edits only within that change.
+4. Review with `jj diff`.
 
-## Do Not Accumulate
-
-Do not accumulate multiple unrelated test changes into a single jj change. Each test suite, contract test group, or validation script should be its own change.
+If the work does not fit the active change, stop and ask the user to create or select an appropriate change. Do not run `jj init`, `jj new`, `jj describe`, `jj edit`, or `jj squash`.

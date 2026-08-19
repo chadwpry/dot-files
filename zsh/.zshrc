@@ -4,6 +4,11 @@ export LIBPQ_INSTALL="/opt/homebrew/opt/libpq/bin"
 
 export PATH="$LIBPQ_INSTALL:$BUN_INSTALL:$PATH"
 
+autoload -Uz compinit
+compinit
+
+compdef _make make
+
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 elif [[ -x "$HOME/.local/bin/mise" ]]; then
@@ -17,3 +22,13 @@ fi
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
 fi
+
+if [[ -r "$HOME/.config/zsh/podman-docker.zsh" ]]; then
+  source "$HOME/.config/zsh/podman-docker.zsh"
+fi
+
+# Added by dbt installer
+export PATH="$PATH:/Users/cpry/.local/bin"
+
+# dbt aliases
+alias dbtf=/Users/cpry/.local/bin/dbt

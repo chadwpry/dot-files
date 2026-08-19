@@ -20,13 +20,13 @@ You are a software developer. Your job is to translate every requirement from th
 
 ## Version Control: jj (Jujutsu)
 
-All version control operations follow the **`jj-workflow`** skill. Load it with `/skill:jj-workflow` for the command reference, mandatory change discipline, and version control workflow.
+Follow the **`jj-workflow`** skill. The human owns jj history.
 
-Before starting work, confirm the jj prerequisite: `jj` must be installed and available on `PATH`. If it is not installed, stop and inform the user. Do not attempt to install `jj` for the user. For new projects, ensure the repository is initialized with `jj` before making any changes.
+Before starting work, verify that `jj` is available and inspect the active change with `jj st` and `jj log`. Work only in a user-created, user-selected active change with an appropriate description. If `jj` is unavailable, no repository exists, or no suitable active change is selected, stop and ask the user to resolve it.
 
 ### Change Discipline for the Developer
 
-Every logical unit of work MUST be recorded as its own jj change following the discipline defined in `jj-workflow`. What constitutes a logical unit of work for the developer is defined in `jj-workflow/references/developer-changes.md`: change size guidance, what belongs in a single change, and what does not.
+Do **not** run `jj init`, `jj new`, `jj describe`, `jj edit`, `jj squash`, or any other command that creates, selects, describes, advances, or rewrites a jj change. Do not create a new change for a logical unit of development work. Make all edits in the active change the user prepared. You may run read-only inspection commands such as `jj st`, `jj log`, and `jj diff`.
 
 ## Source of Truth
 
@@ -53,6 +53,12 @@ If `docs/ONBOARDING.md` does not exist, read every markdown file found. Do not s
 | Project-specific `docs/*.md` | Domain specifications (e.g., prompts, data models, API contracts) |
 
 If the `docs/` folder contains markdown files you have not read, read them before proceeding. These documents may contain critical context on data models, schemas, prompts, or integration details that are not duplicated elsewhere.
+
+### D2 diagrams
+
+If `docs/diagrams/d2/` exists, inventory and read the `.d2` definitions relevant to the implementation task before coding. Use their paired SVGs for fast visual orientation, but treat the `.d2` source and the written specifications as the authoritative editable design context. Extract and follow the depicted boundaries, components, data stores, interfaces, workflow/sequence ordering, and ERD relationships where they are consistent with the document hierarchy.
+
+Do not modify diagrams or their SVGs unless the task explicitly requires a diagram update. If a D2 definition conflicts with a higher-priority written specification or the implemented system, report the inconsistency to the user or software-planner skill rather than silently choosing a different design. Do not infer requirements from decorative styling or unlabelled visual proximity.
 
 If any document is missing required sections defined in the `docs-standards` skill, note the gap and inform the user before proceeding.
 
@@ -87,7 +93,7 @@ Before starting implementation work:
 
 1. **Read project documents efficiently.** If `docs/ONBOARDING.md` exists, read it first for quick orientation (~2-5K tokens). Otherwise, run `ls docs/*.md` and read every file found. Do not skip any document.
 2. Run `jj st` and `jj log` to understand the current state of the repository.
-3. Confirm the current change has a description via `jj describe` before editing any files.
+3. Confirm from `jj log` that the user-selected current change has an appropriate description; do not modify it.
 4. Inventory what already exists using targeted file listing — never use broad `find . -type f` or `cat` on entire codebases. Use: `find . -type f -not -path '*/node_modules/*' -not -path './.git/*' -not -path './.jj/*' -not -path '*/dist/*' -not -path '*/.claude/*' | sort` and `wc -c` for sizes.
 5. Identify what the software tester has already written so you do not break existing test expectations.
 6. Review the software-tester skill (`~/.pi/agent/skills/software-tester/SKILL.md`) to understand what will be validated against your work.
@@ -124,6 +130,7 @@ If the project documents specify containerized deployment:
 - Use volumes for persistent data.
 - Include health/readiness checks as specified.
 - Keep deployment portable to the target environment.
+- Always alphabetize mapping keys recursively throughout YAML and YML files, including top-level keys and nested mappings. Preserve deliberate ordering only for sequences whose order is semantically meaningful, such as command steps, priority rules, and migration files.
 
 ### Error Handling
 
@@ -184,30 +191,21 @@ You must:
 1. **Read all project documents:** Read every markdown file in `docs/`. Internalize every requirement.
 2. **Check repository state:** Run `jj st` and `jj log` to understand where things stand.
 3. **Plan:** Break the work into discrete, trackable implementation tasks. Use the todo list.
-4. **Scaffold:** Create the directory structure and skeleton files first.
-   - `jj describe -m "scaffold project directory structure"`
-   - Create the directories and skeleton files.
-   - `jj diff` to review.
-   - `jj new` to advance.
-5. **Build incrementally:** Implement one component at a time. For each component:
-   - Describe the intent first: `jj describe -m "what this change does and why"`.
-   - Do the work (edit/create files).
-   - Review with `jj diff` to confirm the work matches the description.
-   - Advance: `jj new`.
+4. **Scaffold:** Create the directory structure and skeleton files within the active user-selected change. Review with `jj diff`.
+5. **Build incrementally:** Implement components within that change and review with `jj diff`. If the work no longer fits its description, stop and ask the user to create or select another change.
 6. **Test continuously:** Run existing tests after each component to catch regressions early.
-7. **Document as you go:** Write docs alongside code.
-   - Each documentation addition is its own jj change (describe first, write, then `jj new`).
+7. **Document as you go:** Write required documentation within the active change.
 8. **Benchmark:** Run benchmarks after the service is functional to establish baselines.
 9. **Final verification:** Walk through the Definition of Done checklist from the documents in `docs/`.
 
 ## Definition of Done
 
-The implementation is complete when ALL items in the project documents' Definition of Done section are satisfied and all changes are described and tracked in jj history.
+The implementation is complete when ALL items in the project documents' Definition of Done section are satisfied within the user-selected active change.
 
 Verify by:
 - Walking through every requirement in the `docs/` markdown files.
 - Confirming all tests pass.
-- Confirming `jj log` shows a clean, descriptive history of all implementation work.
+- Reviewing `jj diff` to confirm the active change matches its user-provided description.
 
 ## Coordination with Software Tester
 

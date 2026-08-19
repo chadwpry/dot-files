@@ -19,9 +19,9 @@ Before any skill can make file changes, these conditions must be met:
 1. The `jj` binary must be installed and available on `PATH`.
 2. If `jj` is not installed, inform the user that `jj` is required before work can begin.
 3. Halt work and wait for the user to install `jj`. Do not attempt to install `jj` on the user's behalf.
-4. If a new project has no repository, initialize one with `jj` before making any file changes.
+4. A repository and an active, appropriately described jj change must already be prepared by the user.
 
-No skill should proceed with file changes when `jj` is unavailable.
+No skill should proceed with file changes when `jj` is unavailable, no repository exists, or the user has not prepared a suitable active change.
 
 ## jj Overview
 
@@ -33,56 +33,37 @@ Use `jj` for all version control workflows. Do not use raw `git` commands for da
 
 ## Quick Reference
 
+Skills may inspect the active change with these read-only commands:
+
 | Task | Command |
 |---|---|
 | View status | `jj st` |
 | View log | `jj log` |
-| Describe current change | `jj describe -m "message"` |
-| Create a new change | `jj new` |
 | View diff of current change | `jj diff` |
 | View diff of specific revision | `jj diff -r <rev>` |
-| Squash into parent | `jj squash` |
-| Edit an earlier change | `jj edit <rev>` |
-| Create a bookmark (named branch) | `jj bookmark create <name>` |
-| Push to remote | `jj git push` |
-| Fetch from remote | `jj git fetch` |
-| Resolve conflicts | `jj resolve` |
-| Undo last operation | `jj undo` |
 
-When unsure about a command, consult `jj help <command>` locally or refer to the tutorial at <https://steveklabnik.github.io/jujutsu-tutorial/>.
+The following are **human-only** history-management commands: `jj describe`, `jj new`, `jj squash`, `jj edit`, `jj bookmark create`, `jj git push`, `jj git fetch`, `jj resolve`, and `jj undo`.
+
+When unsure about a command, the user may consult `jj help <command>` locally or refer to the tutorial at <https://steveklabnik.github.io/jujutsu-tutorial/>.
 
 ## Change Discipline (Mandatory)
 
-Every logical unit of work MUST be recorded as its own jj change. This is non-negotiable.
+The human owns jj history. Before editing files, a skill must verify with `jj st` and `jj log` that the user has created and selected an active change whose description covers the work.
 
-The workflow for every piece of work is:
+Skills must **not** run `jj init`, `jj new`, `jj describe`, `jj edit`, `jj squash`, or any other jj command that creates, selects, describes, advances, or rewrites a change. They must not create separate changes for logical units of work. If the active change is missing, unsuitable, or no longer covers the work, stop and ask the user to create or select the appropriate change.
 
-1. **Describe first:** Run `jj describe -m "concise description of what you intend to do and why"` BEFORE making any file changes. This is mandatory for every change.
-2. **Do the work:** Edit files, create files — all within the described change.
-3. **Review:** Run `jj diff` to confirm the change matches the description.
-4. **Advance:** Run `jj new` to create a new empty change before starting the next unit of work.
-
-**Describe before you build. The description is the plan; the file changes are the execution.** This ensures that every change in the history has a meaningful description that was written with intent, not retrofitted after the fact.
-
-**You must run `jj new` after each completed unit of work.** This ensures every logical change is a separate, reviewable node in the history. Do not accumulate multiple unrelated changes into a single jj change.
-
-What constitutes a "logical unit of work" depends on the role. See the role-specific references:
-
-- **Developer:** `jj-workflow/references/developer-changes.md`
-- **Planner:** `jj-workflow/references/planner-changes.md`
-- **Tester:** `jj-workflow/references/tester-changes.md`
+Skills may use read-only commands such as `jj st`, `jj log`, and `jj diff` to inspect and review the active change. Make all file modifications within the user-prepared change.
 
 ## Version Control Workflow
 
-1. **Describe-first changes:** Every change starts with `jj describe` declaring intent, then the work happens inside that change.
-2. **Atomic changes:** Each logical unit of work is a separate jj change.
-3. **Review before sharing:** Use `jj log` and `jj diff` to review changes before pushing.
-4. **Squash workflow:** Use `jj squash` to fold work-in-progress into a clean parent change when ready.
-5. **Bookmarks for sharing:** When pushing to a remote or creating a pull request, create a bookmark with `jj bookmark create <name>` and push with `jj git push`.
+1. **User prepares the change:** The user creates, selects, and describes the change.
+2. **Skill fills the change:** The skill edits files only within that active change.
+3. **Skill reviews:** Use `jj log` and `jj diff` to confirm the work matches the user-provided description.
+4. **User manages history:** Only the user creates, advances, rewrites, bookmarks, or pushes changes.
 
-## When to Use Raw Git Instead of jj
+## Human-Only Raw Git Operations
 
-Most day-to-day version control is done with `jj`. However, certain history-rewriting operations have no `jj` equivalent and require raw `git` commands:
+Most day-to-day version control is done with `jj`. A human may use raw `git` for history-rewriting operations that have no `jj` equivalent:
 
 - **Removing a file from all history** — use `git filter-branch`, not Python packages like `git-filter-repo`
 - **Purging secrets from history** — same `git filter-branch` approach
@@ -95,14 +76,14 @@ Most day-to-day version control is done with `jj`. However, certain history-rewr
 Before making any file changes, every skill should:
 
 1. Run `jj st` and `jj log` to understand the current state of the repository.
-2. Confirm the current change has a description via `jj describe` before editing any files.
-3. If starting a new project with no repository, initialize one with `jj`.
+2. Confirm from `jj log` that the user-selected current change has an appropriate description; do not modify it.
+3. If the repository or a suitable active change is absent, stop and ask the user to prepare it.
 
 ---
 
 ## Role-Specific Change References
 
-Each role has its own definition of what constitutes a logical unit of work and any role-specific jj procedures. These are defined in the references directory:
+The role-specific references define scope guidance for work that the user may choose to separate into changes. They do not authorize skills to create or manage jj changes:
 
 | Reference | Role | Focus |
 |-----------|------|-------|
@@ -111,4 +92,4 @@ Each role has its own definition of what constitutes a logical unit of work and 
 | `references/tester-changes.md` | Software tester | Test writing and validation |
 | `references/history-rewriting.md` | All roles | Purging files, rewriting authorship, force pushing |
 
-Skills should load their role-specific reference alongside this skill to understand what counts as a change in their domain.
+Skills should load their role-specific reference alongside this skill to assess whether work fits the user-prepared active change.
