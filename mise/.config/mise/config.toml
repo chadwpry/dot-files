@@ -3,8 +3,9 @@ experimental = true
 idiomatic_version_file_enable_tools = ["ruby"]
 
 [bootstrap.packages]
+"brew:controlplane-com/cpln/cpln" = "latest"
 "brew:gh" = "latest"
-"brew:jq" = "latest"
+"brew:jq" = "1.8.2"
 "brew:opa" = "latest"
 "brew:podman" = "6.0.2"
 "brew:stow" = "latest"
