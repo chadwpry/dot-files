@@ -2,14 +2,18 @@
 experimental = true
 idiomatic_version_file_enable_tools = ["ruby"]
 
+[bootstrap.brew.taps]
+"controlplane-com/cpln" = "https://github.com/controlplane-com/homebrew-cpln.git"
+
 [bootstrap.packages]
-"brew:controlplane-com/cpln/cpln" = "latest"
+"brew:btop" = "latest"
 "brew:gh" = "latest"
-"brew:jq" = "1.8.2"
+"brew:jq" = "latest"
 "brew:opa" = "latest"
-"brew:podman" = "6.0.2"
+"brew:podman" = "latest"
 "brew:stow" = "latest"
-"brew:1password-cli" = "2.35.0"
+"brew-cask:1password-cli" = "latest"
+"brew-cask:ghostty" = "latest"
 "pacman:btop" = "latest"
 "pacman:jq" = "latest"
 "pacman:stow" = "latest"
@@ -21,5 +25,6 @@ go = "1.26"
 herdr = "0.7.1"
 jj = "0.40.0"
 neovim = "0.12.5"
+node = "26.7.0"
 rg = "15.1.0"
 starship = "1.26.0"

@@ -1,8 +1,9 @@
+export APPLICATIONS_INSTALL="$HOME/Applications"
 export BUN_INSTALL="$HOME/.bun"
 export EDITOR="nvim"
-export LIBPQ_INSTALL="/opt/homebrew/opt/libpq/bin"
+export XDG_CONFIG_HOME="$HOME/.config"
 
-export PATH="$LIBPQ_INSTALL:$BUN_INSTALL:$PATH"
+export PATH="$BUN_INSTALL:$APPLICATIONS_INSTALL:$PATH"
 
 autoload -Uz compinit
 compinit
@@ -32,3 +33,6 @@ export PATH="$PATH:/Users/cpry/.local/bin"
 
 # dbt aliases
 alias dbtf=/Users/cpry/.local/bin/dbt
+
+# Pi
+export PATH="/Users/cpry/.local/share/mise/installs/node/26.7.0/bin:$PATH"

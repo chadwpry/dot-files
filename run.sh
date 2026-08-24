@@ -5,6 +5,7 @@ DOTFILE_PACKAGES=(
   mise
   zsh
   starship
+  tmux
   nvim
   ghostty
   btop
@@ -18,6 +19,7 @@ AGENT_PACKAGES=(
 
 TARGET_DIR="${HOME}"
 RELOAD_SHELL=1
+MISE_TOOLS_INSTALLED_THIS_RUN=0
 
 usage() {
   cat <<'EOF'
@@ -27,7 +29,7 @@ Options:
   --no-reload-shell  Skip automatic shell reload for install and install-zsh
 
 Commands:
-  install               Install system bootstrap packages if needed, install mise/tools, stow all packages, then install tmux TPM/plugins
+  install               Install system bootstrap packages if needed, install mise/tools, stow packages, install Pi before agents, then install tmux TPM/plugins
   install-system        Install system bootstrap packages (jq and stow) using brew or pacman
   install-zsh           Stow only the zsh package into $HOME
   install-mise          Install mise if needed, stow only the mise package into $HOME, then run mise install
@@ -38,7 +40,8 @@ Commands:
   install-btop          Stow only the btop package into $HOME
   install-git           Stow only the git package into $HOME
   install-psql          Stow only the psql package into $HOME
-  install-agent-skills  Stow only the agents package into $HOME
+  install-pi            Install Pi after ensuring mise has installed Node
+  install-agent-skills  Install Pi, then stow only the agents package into $HOME
   install-tmux-tpm      Clone TPM into the tmux package and install tmux plugins from tmux.conf
   remove-zsh            Unstow only the zsh package from $HOME
   remove-mise           Unstow only the mise package from $HOME
@@ -188,6 +191,29 @@ install_mise() {
 
   log_step "Installing tools from mise configuration"
   "${mise_cmd}" install
+  MISE_TOOLS_INSTALLED_THIS_RUN=1
+}
+
+ensure_mise_tools_installed() {
+  if [[ "${MISE_TOOLS_INSTALLED_THIS_RUN}" -eq 1 ]]; then
+    return 0
+  fi
+
+  install_mise
+}
+
+install_pi() {
+  ensure_mise_tools_installed
+  ensure_command curl "Please install curl and rerun this script"
+
+  local mise_cmd
+  mise_cmd="$(mise_bin)"
+
+  log_step "Verifying Node from mise"
+  "${mise_cmd}" exec -- node --version >/dev/null
+
+  log_step "Installing Pi"
+  "${mise_cmd}" exec -- sh -c 'curl -fsSL https://pi.dev/install.sh | sh'
 }
 
 install_starship() {
@@ -383,6 +409,7 @@ install)
   install_btop
   install_git
   install_psql
+  install_pi
   install_agent_skills
   install_tmux_tpm
   reload_shell_if_requested
@@ -418,7 +445,11 @@ install-git)
 install-psql)
   install_psql
   ;;
+install-pi)
+  install_pi
+  ;;
 install-agent-skills)
+  install_pi
   install_agent_skills
   ;;
 install-tmux-tpm)

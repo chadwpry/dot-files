@@ -17,6 +17,8 @@ Packages are processed in this install/restow order:
 9. `psql`
 10. `agents`
 
+During full install, the Pi installer runs after `psql` and immediately before `agents`.
+
 For removal, the script runs the individual remove commands in reverse order.
 
 ## Prerequisites
@@ -40,7 +42,7 @@ To skip the automatic shell reload at the end:
 ./run.sh install --no-reload-shell
 ```
 
-This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install`, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, `psql`, and `agents`), then bootstraps TPM and installs tmux plugins from `tmux.conf`.
+This installs system bootstrap packages (`jq` and `stow`) if needed, installs `mise` if needed, stows the `mise` config, runs `mise install` so Node is available, stows the remaining packages (`zsh`, `starship`, `tmux`, `nvim`, `ghostty`, `btop`, `git`, and `psql`), installs Pi, stows `agents`, then bootstraps TPM and installs tmux plugins from `tmux.conf`.
 
 ### 2. Individual Commands
 
@@ -68,6 +70,7 @@ Install packages individually:
 ./run.sh install-btop
 ./run.sh install-git
 ./run.sh install-psql
+./run.sh install-pi
 ./run.sh install-agent-skills
 ```
 
@@ -143,8 +146,10 @@ Remove all symlinks created by stow in reverse order:
 - `.zshrc` defensively initializes `mise`, `starship`, and `fzf` only when those binaries are available
 - `install` is the one-command bootstrap for a new machine, includes every package plus tmux TPM/plugin setup, and reloads the shell by default
 - `install-mise` installs `mise` with the shell-appropriate bootstrap URL when needed, ensures system bootstrap packages are installed, stows its config, and runs `mise install`
+- `install-pi` ensures `mise install` has run so Node is available, then runs `curl -fsSL https://pi.dev/install.sh | sh` through `mise exec`
 - `install-zsh` reloads the shell by default after stowing `.zshrc`; pass `--no-reload-shell` to skip that
-- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, `install-psql`, and `install-agent-skills` each stow only their matching package
+- `install-zsh`, `install-starship`, `install-tmux`, `install-nvim`, `install-ghostty`, `install-btop`, `install-git`, and `install-psql` each stow only their matching package
+- `install-agent-skills` installs Pi first, then stows the `agents` package
 - `remove-zsh`, `remove-mise`, `remove-starship`, `remove-tmux`, `remove-nvim`, `remove-ghostty`, `remove-btop`, `remove-git`, `remove-psql`, and `remove-agent-skills` each unstow only their matching package
 - `restow` re-stows all managed packages to refresh symlinks after repo changes
 - `remove` runs all package remove commands in reverse install order
