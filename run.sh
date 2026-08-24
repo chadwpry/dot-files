@@ -5,7 +5,6 @@ DOTFILE_PACKAGES=(
   mise
   zsh
   starship
-  tmux
   nvim
   ghostty
   btop
@@ -133,15 +132,15 @@ install_mise_binary() {
   shell_name="$(detect_shell_name)"
 
   case "${shell_name}" in
-    zsh|bash)
-      log_step "Installing mise for ${shell_name}"
-      curl "https://mise.run/${shell_name}" | sh
-      ;;
-    *)
-      echo "Could not determine a supported shell from SHELL='${SHELL:-unset}'"
-      echo "Please install mise manually, then rerun this script"
-      exit 1
-      ;;
+  zsh | bash)
+    log_step "Installing mise for ${shell_name}"
+    curl "https://mise.run/${shell_name}" | sh
+    ;;
+  *)
+    echo "Could not determine a supported shell from SHELL='${SHELL:-unset}'"
+    echo "Please install mise manually, then rerun this script"
+    exit 1
+    ;;
   esac
 }
 
@@ -160,15 +159,15 @@ reload_shell_if_requested() {
   shell_name="$(detect_shell_name)"
 
   case "${shell_name}" in
-    zsh|bash)
-      log_step "Reloading ${shell_name} as a login shell"
-      exec "${SHELL}" -l
-      ;;
-    *)
-      echo "Skipping shell reload because SHELL='${SHELL:-unset}' is not supported"
-      echo "Start a new shell manually to load the updated configuration"
-      return 0
-      ;;
+  zsh | bash)
+    log_step "Reloading ${shell_name} as a login shell"
+    exec "${SHELL}" -l
+    ;;
+  *)
+    echo "Skipping shell reload because SHELL='${SHELL:-unset}' is not supported"
+    echo "Start a new shell manually to load the updated configuration"
+    return 0
+    ;;
   esac
 }
 
@@ -356,130 +355,130 @@ fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --no-reload-shell)
-      RELOAD_SHELL=0
-      ;;
-    help|--help|-h)
-      usage
-      exit 0
-      ;;
-    *)
-      echo "Unknown option: $1"
-      echo
-      usage
-      exit 1
-      ;;
+  --no-reload-shell)
+    RELOAD_SHELL=0
+    ;;
+  help | --help | -h)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "Unknown option: $1"
+    echo
+    usage
+    exit 1
+    ;;
   esac
   shift
 done
 
 case "${COMMAND}" in
-  install)
-    install_mise
-    install_zsh
-    install_starship
-    install_tmux
-    install_nvim
-    install_ghostty
-    install_btop
-    install_git
-    install_psql
-    install_agent_skills
-    install_tmux_tpm
-    reload_shell_if_requested
-    ;;
-  install-system)
-    install_system
-    ;;
-  install-zsh)
-    install_zsh
-    reload_shell_if_requested
-    ;;
-  install-mise)
-    install_mise
-    ;;
-  install-starship)
-    install_starship
-    ;;
-  install-tmux)
-    install_tmux
-    ;;
-  install-nvim)
-    install_nvim
-    ;;
-  install-ghostty)
-    install_ghostty
-    ;;
-  install-btop)
-    install_btop
-    ;;
-  install-git)
-    install_git
-    ;;
-  install-psql)
-    install_psql
-    ;;
-  install-agent-skills)
-    install_agent_skills
-    ;;
-  install-tmux-tpm)
-    install_tmux_tpm
-    ;;
-  remove-zsh)
-    remove_zsh
-    ;;
-  remove-mise)
-    remove_mise
-    ;;
-  remove-starship)
-    remove_starship
-    ;;
-  remove-tmux)
-    remove_tmux
-    ;;
-  remove-nvim)
-    remove_nvim
-    ;;
-  remove-ghostty)
-    remove_ghostty
-    ;;
-  remove-btop)
-    remove_btop
-    ;;
-  remove-git)
-    remove_git
-    ;;
-  remove-psql)
-    remove_psql
-    ;;
-  remove-agent-skills)
-    remove_agent_skills
-    ;;
-  restow)
-    run_stow "-R" "${DOTFILE_PACKAGES[@]}" "${AGENT_PACKAGES[@]}"
-    ;;
-  remove)
-    remove_agent_skills
-    remove_psql
-    remove_git
-    remove_btop
-    remove_ghostty
-    remove_nvim
-    remove_tmux
-    remove_starship
-    remove_zsh
-    remove_mise
-    ;;
-  dry-run)
-    run_stow "-n" "${DOTFILE_PACKAGES[@]}"
-    ;;
-  help|--help|-h)
-    usage
-    ;;
-  *)
-    echo "Unknown command: ${COMMAND}"
-    echo
-    usage
-    exit 1
-    ;;
+install)
+  install_mise
+  install_zsh
+  install_starship
+  install_tmux
+  install_nvim
+  install_ghostty
+  install_btop
+  install_git
+  install_psql
+  install_agent_skills
+  install_tmux_tpm
+  reload_shell_if_requested
+  ;;
+install-system)
+  install_system
+  ;;
+install-zsh)
+  install_zsh
+  reload_shell_if_requested
+  ;;
+install-mise)
+  install_mise
+  ;;
+install-starship)
+  install_starship
+  ;;
+install-tmux)
+  install_tmux
+  ;;
+install-nvim)
+  install_nvim
+  ;;
+install-ghostty)
+  install_ghostty
+  ;;
+install-btop)
+  install_btop
+  ;;
+install-git)
+  install_git
+  ;;
+install-psql)
+  install_psql
+  ;;
+install-agent-skills)
+  install_agent_skills
+  ;;
+install-tmux-tpm)
+  install_tmux_tpm
+  ;;
+remove-zsh)
+  remove_zsh
+  ;;
+remove-mise)
+  remove_mise
+  ;;
+remove-starship)
+  remove_starship
+  ;;
+remove-tmux)
+  remove_tmux
+  ;;
+remove-nvim)
+  remove_nvim
+  ;;
+remove-ghostty)
+  remove_ghostty
+  ;;
+remove-btop)
+  remove_btop
+  ;;
+remove-git)
+  remove_git
+  ;;
+remove-psql)
+  remove_psql
+  ;;
+remove-agent-skills)
+  remove_agent_skills
+  ;;
+restow)
+  run_stow "-R" "${DOTFILE_PACKAGES[@]}" "${AGENT_PACKAGES[@]}"
+  ;;
+remove)
+  remove_agent_skills
+  remove_psql
+  remove_git
+  remove_btop
+  remove_ghostty
+  remove_nvim
+  remove_tmux
+  remove_starship
+  remove_zsh
+  remove_mise
+  ;;
+dry-run)
+  run_stow "-n" "${DOTFILE_PACKAGES[@]}"
+  ;;
+help | --help | -h)
+  usage
+  ;;
+*)
+  echo "Unknown command: ${COMMAND}"
+  echo
+  usage
+  exit 1
+  ;;
 esac
