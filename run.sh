@@ -31,6 +31,7 @@ Options:
 Commands:
   install               Install system bootstrap packages if needed, install mise/tools, stow packages, install Pi before agents, then install tmux TPM/plugins
   install-system        Install system bootstrap packages (jq and stow) using brew or pacman
+  install-keyboard      Set macOS keyboard repeat defaults (KeyRepeat=1, InitialKeyRepeat=10)
   install-zsh           Stow only the zsh package into $HOME
   install-mise          Install mise if needed, stow only the mise package into $HOME, then run mise install
   install-starship      Stow only the starship package into $HOME
@@ -145,6 +146,20 @@ install_mise_binary() {
     exit 1
     ;;
   esac
+}
+
+install_keyboard() {
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    echo "Skipping keyboard defaults because this is not macOS"
+    return 0
+  fi
+
+  log_step "Setting macOS keyboard repeat defaults"
+  defaults write -g KeyRepeat -int 1
+  defaults write -g InitialKeyRepeat -int 10
+  killall cfprefsd 2>/dev/null || true
+  echo "KeyRepeat set to 1 and InitialKeyRepeat set to 10"
+  echo "Log out and back in, or restart affected apps, for keyboard repeat settings to fully apply."
 }
 
 reload_shell_if_requested() {
@@ -400,6 +415,7 @@ done
 
 case "${COMMAND}" in
 install)
+  install_keyboard
   install_mise
   install_zsh
   install_starship
@@ -416,6 +432,9 @@ install)
   ;;
 install-system)
   install_system
+  ;;
+install-keyboard)
+  install_keyboard
   ;;
 install-zsh)
   install_zsh
