@@ -1,9 +1,10 @@
 export APPLICATIONS_INSTALL="$HOME/Applications"
 export BUN_INSTALL="$HOME/.bun"
 export EDITOR="nvim"
+export HOMEBREW_BIN="/opt/homebrew/bin"
 export XDG_CONFIG_HOME="$HOME/.config"
 
-export PATH="$BUN_INSTALL:$APPLICATIONS_INSTALL:$PATH"
+export PATH="$BUN_INSTALL:$APPLICATIONS_INSTALL:$HOMEBREW_BIN:$PATH"
 
 autoload -Uz compinit
 compinit
