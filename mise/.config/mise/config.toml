@@ -21,10 +21,11 @@ idiomatic_version_file_enable_tools = ["ruby"]
 [tools]
 bat = "0.26.1"
 fzf = "0.73.1"
-go = "1.26"
+go = "1.26.10"
 herdr = "0.7.1"
 jj = "0.40.0"
 neovim = "0.12.5"
-node = "26.7.0"
+node = "26.12.1"
 rg = "15.1.0"
 starship = "1.26.0"
+superfile = "1.6.0"
