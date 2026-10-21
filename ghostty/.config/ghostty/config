@@ -55,7 +55,7 @@ mouse-scroll-multiplier = 0.95
 # https://samuellawrentz.com/blog/ghostty-tmux-productivity/
 # copy-on-select = false
 
-#background-opacity = 1.0
+background-opacity = 1.0
 copy-on-select = clipboard
 # https://mwolson.org/blog/2025-11-12-ghostty-tmux-uniform-copy-paste/
 # remap super+c to ctrl+shift+c, use `bash -i -c cat` to see keycodes
