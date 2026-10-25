@@ -15,6 +15,7 @@ idiomatic_version_file_enable_tools = ["ruby"]
 "brew-cask:1password-cli" = "latest"
 "brew-cask:ghostty" = "latest"
 "pacman:btop" = "latest"
+"pacman:github-cli" = "latest"
 "pacman:jq" = "latest"
 "pacman:stow" = "latest"
 
