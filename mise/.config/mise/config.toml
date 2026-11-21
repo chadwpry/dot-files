@@ -12,16 +12,17 @@ idiomatic_version_file_enable_tools = ["ruby"]
 "controlplane-com/cpln" = "https://github.com/controlplane-com/homebrew-cpln.git"
 
 [bootstrap.packages]
+"brew:btop" = "latest"
 "brew:opa" = "latest"
 "brew:podman" = "latest"
 "brew:stow" = "latest"
 "brew-cask:1password-cli" = "latest"
 "brew-cask:ghostty" = "latest"
+ "pacman:btop" = "latest"
 "pacman:stow" = "latest"
 
 [tools]
 bat = "0.26.1"
-btop = "1.4.8"
 fzf = "0.73.1"
 gh = "2.105.0"
 go = "1.26.10"
