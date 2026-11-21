@@ -1,6 +1,8 @@
 export APPLICATIONS_INSTALL="$HOME/Applications"
 export BUN_INSTALL="$HOME/.bun"
+export DO_NOT_TRACK=true
 export EDITOR="nvim"
+export GH_TELEMETRY=false
 export HOMEBREW_BIN="/opt/homebrew/bin"
 export XDG_CONFIG_HOME="$HOME/.config"
 
